@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,16 +30,19 @@ public class BuyerController {
     @Autowired
     BuyerService buyerService;
     
-    @PutMapping(value="/update-bid/{productId}/buyerEnailId/{newBidAmount}")
-    public Buyer updateBid(@PathVariable String productId,@PathVariable String buyerEmailId,@PathVariable String newBidAmount){
-    	return buyerService.updateBid(productId,buyerEmailId,newBidAmount);
-    }
+   
     
     @GetMapping(value={"/show-products"})
-	public List<Product> showProducts() {
+	public Page<Product> showProducts() {
 		
 		return buyerService.showAllProducts();
 	}
+    
+    @GetMapping(value={"/show-bids"})
+  	public List<Buyer> showBids() {
+  		
+  		return buyerService.showALlBids();
+  	}
     
     @PostMapping(value="/place-bid")
     public Buyer placeBid(@RequestBody Buyer buyer){

@@ -6,10 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.casestudy.eauction.entities.Buyer;
+import com.casestudy.eauction.entities.BuyerKey;
 
-public interface BuyerRepository  extends JpaRepository<Buyer,Integer> {
 
-	@Query("select b from Buyer b where productId = ?1")
+public interface BuyerRepository  extends JpaRepository<Buyer,BuyerKey> {
+
+	@Query("select b from Buyer b where product_id = ?1")
 	public List<Buyer> findAllBidsByProductId(int productId);
+
+	@Query("select b from Buyer b where buyer_email_id = ?1")
+	public List<Buyer> findAllBidsByEmail(String email);
 }
 

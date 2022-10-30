@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SellerRepository extends JpaRepository<Product,Integer> {
 	
-	@Query("select p from Product p where sellerEmail = ?1")
+	@Query("select p from Product p where seller_email = ?1")
 	public List<Product> findAllProductsBySellerEmail(String emailId);
 }

@@ -1,5 +1,6 @@
 package com.casestudy.eauction.services;
 
+import com.casestudy.eauction.configurations.security.models.User;
 import com.casestudy.eauction.entities.Buyer;
 import com.casestudy.eauction.entities.Product;
 import com.casestudy.eauction.entities.Seller;
@@ -7,6 +8,8 @@ import com.casestudy.eauction.repos.BuyerRepository;
 import com.casestudy.eauction.repos.SellerDetailsRepositroy;
 import com.casestudy.eauction.repos.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,13 +35,27 @@ public class SellerServiceImpl implements SellerService {
 
 	@Override
 	public Product addProduct(Product bid) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object pricipal = auth.getPrincipal();
+		String email="";
+		if (pricipal instanceof User) {
+			email = ((User) pricipal).getEmail();
+		}		
+		Seller seller = sellerDetailsRepository.findById(email).orElse(null);
+		if(seller !=null) {
+			bid.setSeller(seller);
+			return sellerRepository.save(bid);
+			
+		}
 		return sellerRepository.save(bid);
 	}
 
 	@Override
 	public List<Buyer> showAllBids(String emailId,int productId) {		
 		List<Product> products = sellerRepository.findAllProductsBySellerEmail(emailId);
+		
 		int newProductId = products.stream().map(Product::getProductId).filter(x-> x==productId).findAny().orElse(0);
+		
 		if(newProductId>0) {
 			return buyerRepository.findAllBidsByProductId(productId);
 		}

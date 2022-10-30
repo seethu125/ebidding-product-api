@@ -1,5 +1,6 @@
 package com.casestudy.eauction.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,14 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Data
 @Entity
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,9 +39,10 @@ public class Product {
     
     private String selectedCategory;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user.username")
-    private String sellerEmail;
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "seller_email")
+    @JsonIgnore
+    private Seller seller;
 
     @Override
 	public int hashCode() {

@@ -47,6 +47,8 @@ security:
    - /public/*
    - /h2-console
    - /test/**
+   - /context-path/v3/api-docs
+   - /v3/api-docs
    exposed-headers:
    - X-Xsrf-Token
    valid-application-roles:
@@ -57,7 +59,7 @@ security:
    super-admins: ${SUPER_ADMINS}
    test:
      login:
-       enabled: ${TEST_LOGIN_ENABLED}
+       enabled: false
 logging:
    level:
       root: WARN
