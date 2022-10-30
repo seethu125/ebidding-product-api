@@ -45,6 +45,7 @@ security:
    - /favicon.ico
    - /session/login
    - /public/*
+   - /h2-console
    - /test/**
    exposed-headers:
    - X-Xsrf-Token
@@ -70,12 +71,15 @@ logging:
      console: "%d{HH:mm:ss} || %highlight(%5p) < %highlight(%-35.35logger{35}) > %highlight(%m%n)"
 spring: 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: root
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     hibernate.ddl-auto: update
+active-mq:
+  broker-url : http://127.0.0.1:8161/
+  topic: e-bidding
  
     
